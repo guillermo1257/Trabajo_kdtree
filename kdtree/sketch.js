@@ -43,11 +43,14 @@ function setup () {
   //     textSize (8) ;
   //     text (x + ',' + y, x + 5, height - y);// 200 -y para q se dibuje apropiadamente
   //   }
-  
+  console.log("MENOR");
+  console.log(closest_point_brute_force(data, [100, 100]));
+
   var root = build_kdtree ( data ) ;
   console.log(getHeight(root));
   console.log ( root.point );
-  console.log("AAAA");
-  console.log('digraph G {' + generate_dot(root) + '}');
+  
+  //console.log('digraph G {' + generate_dot(root) + '}');
+ 
   
 }

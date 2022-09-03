@@ -84,9 +84,22 @@ function build_kdtree(points, depth = 0){
 function distanceSquared ( point1 , point2 ){
     var distance = 0;
     for (var i = 0; i < k; i ++)
-    distance += Math.pow (( point1 [i] - point2 [i]) , 2) ;
+        distance += Math.pow (( point1 [i] - point2 [i]) , 2) ;
     return Math.sqrt ( distance );
 }
 
-function closest_point_brute_force ( points , point ) {}
+function closest_point_brute_force ( points , point) 
+{
+    dist_menor = 999999999999999;
+    for (var i = 0; i < points.length; i ++)
+    {
+        point_t = points[i];
+        dist = distanceSquared (point_t, point);
+        if (dist < dist_menor)
+        {
+            dist_menor = dist;
+        }
+    }
+    return dist_menor;
+}
 function naive_closest_point (node , point , depth = 0, best = null ) {}
