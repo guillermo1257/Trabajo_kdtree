@@ -1,4 +1,4 @@
-function setup () {
+function setup(){
   var width = 250;
   var height = 200;
   createCanvas (width , height ) ;
@@ -23,7 +23,7 @@ function setup () {
   //   textSize (8) ;
   //   text (x + ',' + y, x + 5, height - y);// 200 -y para q se dibuje apropiadamente
   // }
-var data = [
+  var data = [
   // [40,70],
   // [70,130],
   // [90,40],
@@ -32,17 +32,16 @@ var data = [
   // [160,100],
   // [150,30]
   // [40 ,70] ,
-  [40 ,70] ,
-  [70 ,130] ,
-  [90 ,40] ,
-  [110 , 100] ,
-  [140 ,110] ,
-  [160 , 100],
-  [150,30]
-
+    [40, 70],
+    [70, 130],
+    [90, 40],
+    [110, 100],
+    [140, 110],
+    [160, 100],
+    [150, 30]
   ];
 
-  for ( let i = 0; i < data.length; i ++) {
+  for ( let i = 0; i < data.length; i ++){
     
        var x = data[i][0];
        var y = data[i][1];
@@ -52,20 +51,21 @@ var data = [
        text (x + ',' + y, x + 5, height - y);// 200 -y para q se dibuje apropiadamente
   }
 
-  console.log("MENOR");
-  console.log(closest_point_brute_force(data, [140, 90]));
+  point0=[140,90];// punto de referencia
+  console.log("Menor al Punto "+point0);
+  console.log(closest_point_brute_force(data, point0));
 
-  var root = build_kdtree ( data ) ;
+  var root = build_kdtree (data);
   //console.log(getHeight(root));
-  //console.log ( root.point );
+  //console.log( root.point );
   
   console.log( generate_dot(root));
 
-  best1 = naive_closest_point(root, [140, 90]);
+  best1 = naive_closest_point(root, point0);
   
   console.log("naive_closest_point " + best1.point);
  
-  best2 = closest_point(root, [140, 90]);
+  best2 = closest_point(root, point0);
   console.log("closest_point " + best2.point);
   console.log();
 }
