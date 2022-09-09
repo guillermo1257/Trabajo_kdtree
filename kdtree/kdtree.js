@@ -171,7 +171,33 @@ function closest_point(node,point_2,depth = 0){
 }
 function range_query_circle ( node , center , radio , queue , depth = 0 ) //edward
 {
-	
+	if (node==null) return null;
+
+	var axis = node.axis ;
+	var nb = null;
+	var ob = null;
+
+	if (center[axis] < node.point[axis]){
+		nb=node.left;
+		ob=node.right;
+	} else {
+		nb=node.right;
+		ob=node.left;
+	}
+
+	var best=closer_point(center,node,range_query_circle(nb,center,radio,queue,depth+1));
+
+	if(Math.abs(center[axis]-node.point[axis]) <= radio || distanceSquared(center,best.point) > Math.abs(center[axis]-node.point[axis])){
+
+		if(distanceSquared(center,node.point) <= radio){
+
+			queue.push(node.point);
+		}
+
+		best=closer_point(center,best,range_query_circle(ob,center,radio,queue,depth+1));
+	}
+
+	return best ;
 }
 function range_query_rect(node, center, hug, queue, depth = 0){ //porfirio 
     if(node==null) return null;
