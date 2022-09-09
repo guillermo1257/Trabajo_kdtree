@@ -1,11 +1,12 @@
 k = 2;
 
 class Node {
-    constructor (point , axis ){
-    this.point = point;
-    this.left = null;
-    this.right = null;
-    this.axis = axis;
+    constructor (point , axis,label)
+    {
+    	this.point = point;
+    	this.left = null;
+    	this.right = null;
+    	this.axis = axis;
     }
 }
 
@@ -25,7 +26,11 @@ function getHeight(node){
             return (rDepth + 1);
     }
 }
-
+function generate_dot(node)
+{
+    g =  dot_nodes(node);
+    return 'digraph G {' + g + '}';
+}
 function dot_nodes(node){
     g = '';
     if(node !== null)
@@ -45,12 +50,9 @@ function dot_nodes(node){
     }
 }
 
-function generate_dot(node){
-    g =  dot_nodes(node);
-    return 'digraph G {' + g + '}';
-}
 
-function build_kdtree(points, depth = 0){
+
+function build_kdtree(points, labels,depth = 0){
     var n = points.length;
     var axis = depth % k;
     
@@ -60,7 +62,7 @@ function build_kdtree(points, depth = 0){
 
     if (n == 1)
     {        
-        return new Node(points[0], axis)
+        return new Node(points[0], axis,labels[0])
     }
 
     var median = Math.floor(points.length / 2);
@@ -76,13 +78,10 @@ function build_kdtree(points, depth = 0){
     var left = points.slice(0, median);
     var right = points.slice(median + 1);
     
-    //console.log(right);
-    
-    stroke (Math.floor(Math.random() * 255) + 100 , Math.floor(Math.random() * 255) + 100  , Math.floor(Math.random() * 255) + 100) ; // opcional
+    var node = new Node(points[median].slice(0, k), axis, labels[median].slice(0, k));
+    node.left = build_kdtree(left, labels.slice(0, median), depth + 1); 
 
-    var node = new Node(points[median].slice(0, k), axis);
-    node.left = build_kdtree(left, depth + 1);
-    node.right = build_kdtree(right, depth + 1);
+    node.right = build_kdtree(right, labels.slice(median + 1), depth + 1);
 
     return node;
 }
@@ -170,3 +169,42 @@ function closest_point(node,point_2,depth = 0){
 	
 	return best;	
 }
+function range_query_circle ( node , center , radio , queue , depth = 0 ) //edward
+{
+	
+}
+function range_query_rect ( node , center , hug , queue , depth = 0 ) //porfilio 
+{
+	
+}
+function deleteNode(arr, node)
+{
+        for(let i = 0; i < arr.length; i++)
+	{
+		if(JSON.stringify(arr[i]) === JSON.stringify(node.point))
+		{ 
+			arr.splice(i, 1);
+			break;
+		}
+    	}
+	return arr;
+	
+}
+function KNN(data, labels, n, point) //guillermo
+{
+    datat = data;
+    let neight = [];
+    let root = build_kdtree(data, labels);
+
+    for(let i = 0; i < n; ++i) {
+        let closePoint = closest_point(root, point);
+		delete root;
+        neight.push(closePoint);
+        rest = deleteNode(datat, closePoint);
+
+        root = build_kdtree(datat, labels);
+    }
+    return neight;
+	
+}
+module.exports = {Node, KNN, closest_point_brute_force, closest_point, generate_dot, build_kdtree, naive_closest_point, dot_nodes };
